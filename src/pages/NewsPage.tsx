@@ -11,6 +11,7 @@ import { resetStore } from '../stores/slices/NewsDetailsSlice.ts';
 import { ArrowBack, Cached } from '@mui/icons-material';
 import { StyledFab } from '../styled/StyledFab.tsx';
 import { StyledTitle } from '../styled/StyledHeaders.tsx';
+import CommentaryBlock from '../components/CommentaryBlock.tsx';
 
 const NewsPage = () => {
   const queryClient = useQueryClient();
@@ -27,8 +28,6 @@ const NewsPage = () => {
       dispatch(resetStore());
     };
   }, [dispatch]);
-
-  const firstComments = useSelector<StoresState, number[]>((state) => state.newsStore.firstLevelComments);
 
   return (
     <Suspense
@@ -54,11 +53,7 @@ const NewsPage = () => {
               <Cached />
             </StyledFab>
           </Box>
-          {firstComments.map((comment) => (
-            <Box key={comment}>
-              <Commentary commentId={comment} />
-            </Box>
-          ))}
+          <CommentaryBlock />
         </Stack>
       </NewsRefetcherProvider>
     </Suspense>
