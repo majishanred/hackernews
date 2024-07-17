@@ -1,27 +1,37 @@
-import {Box, Stack} from "@mui/material";
+import { Stack } from '@mui/material';
+import { formatDate } from '../utils/utils.ts';
+import { useSelector } from 'react-redux';
+import { StoresState } from '../stores/Store.ts';
+import { NewsDetails } from '../types/NewsDetails.ts';
+import { StyledTitle } from '../styled/StyledHeaders.tsx';
 
-type NewsProps = {
-    title: string;
-    url: string;
-    descendants: number;
-    date: number;
-    by: string;
-}
+export const News = () => {
+  const data = useSelector<StoresState, NewsDetails | null>((state) => state.newsStore.newsDetails);
 
-export const News = ({ title, url, descendants, date, by }: NewsProps) => {
+  if (!data)
     return (
-        <Stack>
-            <Box>
-                <span>{title}</span>
-                <span>News original: <a>{url}</a></span>
-            </Box>
-            <Box>
-                <span>By: {by}</span>
-                <span>Date published: {date}</span>
-            </Box>
-            <Box>
-                <span>Total comments: {descendants}</span>
-            </Box>
-        </Stack>
-    )
+      <Stack marginLeft="16px" marginTop="16px" marginBottom="16px">
+        Грузим данные новости
+      </Stack>
+    );
+
+  const { title, url, user, time, comments_count } = data;
+
+  return (
+    <Stack padding="16px" gap="8px">
+      <Stack gap="8px">
+        <StyledTitle variant="h2">{title}</StyledTitle>
+        <span>Date published: {formatDate(time)}</span>
+        <span>
+          News original: <a href={url && url}>{url ? url : 'No data provided'}</a>
+        </span>
+      </Stack>
+      <Stack>
+        <span>By: {user ? user : 'No data provided'}</span>
+      </Stack>
+      <Stack gap="8px">
+        <span>Total comments: {comments_count}</span>
+      </Stack>
+    </Stack>
+  );
 };

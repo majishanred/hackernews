@@ -1,20 +1,47 @@
-import {Box, Stack} from "@mui/material";
-import StyledCommentaryBlock from "../styled/StyledCommentaryBlock.tsx";
-import {useState} from "react";
+import { Box, Divider, Stack } from '@mui/material';
+import { createRef, memo, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { StoredCommentary } from '../stores/slices/NewsDetailsSlice.ts';
+import { StoresState } from '../stores/Store.ts';
 
 type CommentaryProps = {
-    commentId: number;
-    isExpanded?: boolean;
-}
+  commentId: number;
+};
 
-export const Commentary = ({ commentId, isExpanded = false}: CommentaryProps) => {
-    const [expanded, setExpanded] = useState(isExpanded);
+export const Commentary = memo(function WrappedCommentary({ commentId }: CommentaryProps) {
+  const [showChildren, setShowChildren] = useState(false);
+  const comment = useSelector<StoresState, StoredCommentary>((state) => state.newsStore.comments[commentId]);
+  const commentContentRef = createRef<HTMLDivElement>();
 
-    return <Stack onClick={() => setExpanded(true)}>
-        <Box>
-            <span>By: {data.by}</span>
-            <p>{data.text}</p>
-        </Box>
-        { expanded && <StyledCommentaryBlock>{data.kids.map(commentId => <Commentary commentId={commentId}/>)}</StyledCommentaryBlock> }
-    </Stack>;
-}
+  useEffect(() => {
+    if (commentContentRef.current) commentContentRef.current.innerHTML = comment.content;
+  }, [comment.content, commentContentRef]);
+
+  if (!comment) return <Stack>Грузим</Stack>;
+  if (comment.deleted || comment.dead)
+    return (
+      <Stack marginLeft="12px" paddingY="8px" paddingX="16px">
+        Извините, комментарий удален
+        <Divider sx={{ marginTop: '8px' }} />
+      </Stack>
+    );
+
+  return (
+    <Stack onClick={() => setShowChildren(true)} marginLeft="12px" paddingY="8px" paddingX="16px">
+      <Box>
+        <span>By: {comment.user}</span>
+        <div ref={commentContentRef}></div>
+      </Box>
+      <Divider />
+      <Stack marginLeft="12px">
+        {showChildren &&
+          comment.comments.map((elem) => (
+            <Box key={elem}>
+              <Commentary commentId={elem} />
+            </Box>
+          ))}
+      </Stack>
+      {comment.comments.length > 0 && <Divider />}
+    </Stack>
+  );
+});
