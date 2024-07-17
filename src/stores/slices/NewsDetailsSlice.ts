@@ -42,7 +42,7 @@ const NewsSlice = createSlice({
         }
 
         const commentJson = JSON.stringify(state.comments[comment.id]);
-        const newCommentJson = JSON.stringify(comment);
+        const newCommentJson = JSON.stringify(commentToStore);
 
         if (commentJson === newCommentJson) {
           return;
