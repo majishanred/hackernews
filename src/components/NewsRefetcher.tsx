@@ -15,7 +15,6 @@ const NewsRefetcher = ({ children }: PropsWithChildren) => {
   if (!newsId) throw new Error('News Id must be provided');
 
   useEffect(() => {
-    console.log('firing');
     const { controller, fetchFunc } = NewsFetcher(newsId);
 
     const fetchNews = async () => {
@@ -42,7 +41,6 @@ const NewsRefetcher = ({ children }: PropsWithChildren) => {
     }, 1000 * 60);
 
     return () => {
-      console.log('clearing');
       controller.abort();
       clearInterval(intervalId);
     };
