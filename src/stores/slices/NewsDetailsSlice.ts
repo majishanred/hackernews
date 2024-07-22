@@ -1,13 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Commentary } from '../../types/Commentary.ts';
 import { NewsDetails } from '../../types/NewsDetails.ts';
+import { isShallowlyEquals } from '../../utils/utils.ts';
 
 export type NewsStore = {
   newsDetails: NewsDetails | null;
   firstLevelComments: number[];
-  comments: {
-    [id: number]: StoredCommentary;
-  };
+  comments: Record<number, StoredCommentary>;
+  error: unknown;
+  refetchTrigger: number;
 };
 
 export type StoredCommentary = Omit<Commentary, 'comments'> & {
@@ -18,13 +19,15 @@ const initialState: NewsStore = {
   newsDetails: null,
   firstLevelComments: [],
   comments: {},
+  refetchTrigger: Date.now(),
+  error: null,
 };
 
 const NewsSlice = createSlice({
   name: 'NewsSlice',
   initialState,
   reducers: {
-    changeComment(state, action: PayloadAction<Commentary[]>) {
+    changeComments(state, action: PayloadAction<Commentary[]>) {
       action.payload.forEach((comment) => {
         const nestedCommentsIds = comment.comments.map((element) => element.id);
         const commentToStore: StoredCommentary = {
@@ -41,18 +44,15 @@ const NewsSlice = createSlice({
           return;
         }
 
-        const commentJson = JSON.stringify(state.comments[comment.id]);
-        const newCommentJson = JSON.stringify(commentToStore);
-
-        if (commentJson === newCommentJson) {
+        if (isShallowlyEquals(state.comments[comment.id], commentToStore)) {
           return;
-        } else {
-          state.comments[comment.id] = commentToStore;
         }
+
+        state.comments[comment.id] = commentToStore;
       });
     },
     changeNewsDetails: (state, action: PayloadAction<NewsDetails>) => {
-      if (JSON.stringify(state.newsDetails) === JSON.stringify(action.payload)) return;
+      if (isShallowlyEquals<NewsDetails>(state.newsDetails, action.payload)) return;
       state.newsDetails = action.payload;
     },
     resetStore: (state) => {
@@ -60,9 +60,15 @@ const NewsSlice = createSlice({
       state.firstLevelComments = initialState.firstLevelComments;
       state.comments = initialState.comments;
     },
+    setError: (state, action: PayloadAction<unknown>) => {
+      state.error = action.payload;
+    },
+    triggerRefetch: (state) => {
+      state.refetchTrigger = Date.now();
+    },
   },
 });
 
-export const { changeComment, changeNewsDetails, resetStore } = NewsSlice.actions;
+export const { changeComments, changeNewsDetails, resetStore, setError, triggerRefetch } = NewsSlice.actions;
 
 export default NewsSlice.reducer;

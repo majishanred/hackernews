@@ -24,7 +24,7 @@ function App() {
   return (
     <>
       <StyledPageHeader variant="h1">Hacker News</StyledPageHeader>
-      <Divider></Divider>
+      <Divider />
       <QueryClientProvider client={queryClient}>
         <Provider store={newsDetailsStore}>
           <RouterProvider router={router} />

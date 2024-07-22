@@ -1,10 +1,10 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { FeedItem } from '../types/FeedItem.ts';
 import { formatDate } from '../utils/utils.ts';
+import { NewsDetails } from '../types/NewsDetails.ts';
 
 type NewsFeedElementProps = {
-  feedItem: FeedItem;
+  feedItem: NewsDetails;
 };
 
 const NewsFeedElement = ({ feedItem }: NewsFeedElementProps) => {

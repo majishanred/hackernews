@@ -1,7 +1,8 @@
 import { Commentary } from '../types/Commentary.ts';
 
 export const formatDate = (date: number) => {
-  const currentDate = new Date(date * 1000); // Походу считает не в милисекундах, а в секундах
+  // @Note: Похоже api считает дату не в милисекундах, а в секундах
+  const currentDate = new Date(date * 1000);
   const day = currentDate.getDate();
   const month = currentDate.getMonth() + 1;
   const year = currentDate.getFullYear();
@@ -19,4 +20,10 @@ export const flattenedCommentsTree = (commentsTree: Commentary[]) => {
   });
 
   return flatteredComments;
+};
+export const isShallowlyEquals = <T>(item1: T | null | undefined, item2: T | null | undefined) => {
+  const json1 = JSON.stringify(item1);
+  const json2 = JSON.stringify(item2);
+
+  return json1 === json2;
 };

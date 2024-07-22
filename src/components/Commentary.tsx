@@ -1,5 +1,5 @@
 import { Box, Divider, Stack } from '@mui/material';
-import { createRef, memo, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { StoredCommentary } from '../stores/slices/NewsDetailsSlice.ts';
 import { StoresState } from '../stores/Store.ts';
@@ -8,26 +8,26 @@ type CommentaryProps = {
   commentId: number;
 };
 
-export const Commentary = memo(function WrappedCommentary({ commentId }: CommentaryProps) {
-  const [showChildren, setShowChildren] = useState(false);
+export const Commentary = ({ commentId }: CommentaryProps) => {
   const comment = useSelector<StoresState, StoredCommentary>((state) => state.newsStore.comments[commentId]);
-  const commentContentRef = createRef<HTMLDivElement>();
+  const [showChildren, setShowChildren] = useState(false);
+  const commentContentRef = useCallback(
+    (element: HTMLDivElement) => {
+      if (element) element.innerHTML = comment.content;
+    },
+    [comment.content],
+  );
 
-  useEffect(() => {
-    if (commentContentRef.current) commentContentRef.current.innerHTML = comment.content;
-  }, [comment.content, commentContentRef]);
-
-  if (!comment) return <Stack>Грузим</Stack>;
   if (comment.deleted || comment.dead)
     return (
-      <Stack marginLeft="12px" paddingY="8px" paddingX="16px">
+      <Stack paddingY="8px" paddingX="8px">
         Извините, комментарий удален
         <Divider sx={{ marginTop: '8px' }} />
       </Stack>
     );
 
   return (
-    <Stack onClick={() => setShowChildren(true)} marginLeft="12px" paddingY="8px" paddingX="16px">
+    <Stack onClick={() => setShowChildren(true)} paddingY="8px" paddingX="8px">
       <Box>
         <span>By: {comment.user}</span>
         <div ref={commentContentRef}></div>
@@ -41,7 +41,7 @@ export const Commentary = memo(function WrappedCommentary({ commentId }: Comment
             </Box>
           ))}
       </Stack>
-      {comment.comments.length > 0 && <Divider />}
+      {!!comment.comments.length && <Divider />}
     </Stack>
   );
-});
+};

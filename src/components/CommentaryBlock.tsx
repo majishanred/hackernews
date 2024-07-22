@@ -6,15 +6,11 @@ import { Commentary } from './Commentary.tsx';
 const CommentaryBlock = () => {
   const firstComments = useSelector<StoresState, number[]>((state) => state.newsStore.firstLevelComments);
 
-  return (
-    <>
-      {firstComments.map((comment) => (
-        <Box key={comment}>
-          <Commentary commentId={comment} />
-        </Box>
-      ))}
-    </>
-  );
+  return firstComments.map((comment) => (
+    <Box key={comment}>
+      <Commentary commentId={comment} />
+    </Box>
+  ));
 };
 
 export default CommentaryBlock;
