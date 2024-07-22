@@ -3,7 +3,7 @@ import { News } from '../components/News.tsx';
 import { useEffect } from 'react';
 import { Box, Stack } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { resetStore, setError } from '../stores/slices/NewsDetailsSlice.ts';
+import { resetStore, setError, triggerRefetch } from '../stores/slices/NewsDetailsSlice.ts';
 import { ArrowBack, Cached } from '@mui/icons-material';
 import { StyledFab } from '../styled/StyledFab.tsx';
 import { StyledTitle } from '../styled/StyledHeaders.tsx';
@@ -34,14 +34,16 @@ const NewsPage = () => {
     );
 
   return (
-    <>
+    <NewsRefetcher>
       <Box marginTop="4px" paddingX="4px" display="flex" alignItems="space-between">
         <Link to="/">
           <StyledFab>
             <ArrowBack />
           </StyledFab>
         </Link>
-        <NewsRefetcher />
+        <StyledFab onClick={() => dispatch(triggerRefetch())} sx={{ marginLeft: 'auto' }}>
+          <Cached />
+        </StyledFab>
       </Box>
       <News />
       <Stack marginLeft="16px">
@@ -50,7 +52,7 @@ const NewsPage = () => {
         </Box>
         <CommentaryBlock />
       </Stack>
-    </>
+    </NewsRefetcher>
   );
 };
 

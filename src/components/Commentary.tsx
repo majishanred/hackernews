@@ -28,11 +28,11 @@ export const Commentary = ({ commentId }: CommentaryProps) => {
 
   return (
     <Stack onClick={() => setShowChildren(true)} paddingY="8px" paddingX="8px">
-      <Box>
+      <Stack gap="16px">
         <span>By: {comment.user}</span>
         <div ref={commentContentRef}></div>
-      </Box>
-      <Divider />
+      </Stack>
+      <Divider sx={{ marginTop: '8px' }} />
       <Stack marginLeft="12px">
         {showChildren &&
           comment.comments.map((elem) => (
