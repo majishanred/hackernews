@@ -6,7 +6,7 @@ import { isShallowlyEquals } from '../../utils/utils.ts';
 export type NewsStore = {
   newsDetails: NewsDetails | null;
   firstLevelComments: number[];
-  comments: Record<number, StoredCommentary>;
+  comments: Record<string, StoredCommentary>;
   error: unknown;
   refetchTrigger: number;
 };
