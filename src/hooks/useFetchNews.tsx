@@ -1,10 +1,10 @@
 import axios, { AxiosError, CanceledError } from 'axios';
-import { Item } from '../types/Item.ts';
 import { useEffect } from 'react';
 import { setError } from '../stores/slices/NewsFeedSlice.ts';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeNews } from '../stores/slices/NewsDetailsSlice.ts';
 import { StoresState } from '../stores/Store.ts';
+import { NewsDetails } from '../types/NewsDetails.ts';
 
 const useFetchNews = (newsId: string) => {
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ const useFetchNews = (newsId: string) => {
 
     const fetchNews = async () => {
       try {
-        const { data } = await axios<Item>(`https://api.hnpwa.com/v0/item/${newsId}.json`, {
+        const { data } = await axios<NewsDetails>(`https://api.hnpwa.com/v0/item/${newsId}.json`, {
           signal,
         });
 

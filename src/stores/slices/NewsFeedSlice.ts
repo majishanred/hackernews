@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { NewsDetails } from '../../types/NewsDetails.ts';
 import { isShallowlyEquals } from '../../utils/utils.ts';
+import { FeedItem } from '../../types/FeedItem.ts';
 
 export type NewsFeedStore = {
-  newsFeed: NewsDetails[];
+  newsFeed: FeedItem[];
   error: unknown;
   refetchTrigger: number;
 };
@@ -18,7 +18,7 @@ const NewsFeedSlice = createSlice({
   name: 'NewsFeed',
   initialState,
   reducers: {
-    changeNewsFeed: (state, action: PayloadAction<NewsDetails[]>) => {
+    changeNewsFeed: (state, action: PayloadAction<FeedItem[]>) => {
       if (isShallowlyEquals(state.newsFeed, action.payload)) {
         return;
       }

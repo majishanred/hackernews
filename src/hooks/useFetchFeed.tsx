@@ -3,7 +3,7 @@ import { StoresState } from '../stores/Store.ts';
 import { useEffect } from 'react';
 import axios, { AxiosError, CanceledError } from 'axios';
 import { changeNewsFeed, setError } from '../stores/slices/NewsFeedSlice.ts';
-import { NewsDetails } from '../types/NewsDetails.ts';
+import { FeedItem } from '../types/FeedItem.ts';
 
 const queryPages = [1, 2, 3, 4];
 
@@ -18,7 +18,7 @@ const useFetchFeed = () => {
     const fetchFeed = async () => {
       try {
         const data = await Promise.all(
-          queryPages.map((page) => axios<NewsDetails[]>(`https://api.hnpwa.com/v0/newest/${page}.json`), {
+          queryPages.map((page) => axios<FeedItem[]>(`https://api.hnpwa.com/v0/newest/${page}.json`), {
             signal,
           }),
         );
