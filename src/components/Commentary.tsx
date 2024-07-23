@@ -1,16 +1,14 @@
-import { Box, Divider, Stack } from '@mui/material';
+import { Divider, Stack } from '@mui/material';
 import { useCallback, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { StoredCommentary } from '../stores/slices/NewsDetailsSlice.ts';
-import { StoresState } from '../stores/Store.ts';
+import { Commentary as CommentType } from '../types/Commentary.ts';
 
 type CommentaryProps = {
-  commentId: number;
+  comment: CommentType;
 };
 
-export const Commentary = ({ commentId }: CommentaryProps) => {
-  const comment = useSelector<StoresState, StoredCommentary>((state) => state.newsStore.comments[commentId]);
-  const [showChildren, setShowChildren] = useState(false);
+export const Commentary = ({ comment }: CommentaryProps) => {
+  const [expanded, setExpanded] = useState(false);
+
   const commentContentRef = useCallback(
     (element: HTMLDivElement) => {
       if (element) element.innerHTML = comment.content;
@@ -27,19 +25,14 @@ export const Commentary = ({ commentId }: CommentaryProps) => {
     );
 
   return (
-    <Stack onClick={() => setShowChildren(true)} paddingY="8px" paddingX="8px">
+    <Stack onClick={() => setExpanded(true)} paddingY="8px" paddingX="8px">
       <Stack gap="16px">
         <span>By: {comment.user}</span>
         <div ref={commentContentRef}></div>
       </Stack>
       <Divider sx={{ marginTop: '8px' }} />
       <Stack marginLeft="12px">
-        {showChildren &&
-          comment.comments.map((elem) => (
-            <Box key={elem}>
-              <Commentary commentId={elem} />
-            </Box>
-          ))}
+        {expanded && comment.comments.map((elem) => <Commentary key={elem.id} comment={elem} />)}
       </Stack>
       {!!comment.comments.length && <Divider />}
     </Stack>

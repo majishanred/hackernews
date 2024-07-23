@@ -5,7 +5,7 @@ import NewsPage from './pages/NewsPage.tsx';
 import { StyledPageHeader } from './styled/StyledHeaders.tsx';
 import { Provider } from 'react-redux';
 import newsDetailsStore from './stores/Store.ts';
-import { Divider } from '@mui/material';
+import { Divider, Stack } from '@mui/material';
 
 const router = createBrowserRouter([
   {
@@ -21,7 +21,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-      <StyledPageHeader variant="h1">Hacker News</StyledPageHeader>
+      <Stack alignItems="center">
+        <StyledPageHeader variant="h1">Hacker News</StyledPageHeader>
+      </Stack>
       <Divider />
       <Provider store={newsDetailsStore}>
         <RouterProvider router={router} />

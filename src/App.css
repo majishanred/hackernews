@@ -18,3 +18,21 @@ a {
 a:visited {
   color: #5a98f2;
 }
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinning_animation {
+  animation-name: logo-spin;
+  animation-duration: 5s;
+  animation-timing-function: cubic-bezier(0.18, 1.01, 0.88, 0.15); //cubic-bezier(0.2, 0.88, 0.68, 0.19);
+  animation-delay: 0s;
+  animation-iteration-count: infinite;
+}

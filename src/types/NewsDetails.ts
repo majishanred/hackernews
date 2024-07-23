@@ -1,3 +1,5 @@
+import { Commentary } from './Commentary.ts';
+
 export type NewsDetails = {
   id: number;
   title: string;
@@ -8,4 +10,5 @@ export type NewsDetails = {
   dead?: boolean;
   url?: string;
   comments_count: number;
+  comments: Commentary[];
 };
