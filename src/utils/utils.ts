@@ -21,9 +21,3 @@ export const flattenedCommentsTree = (commentsTree: Commentary[]) => {
 
   return flatteredComments;
 };
-export const isShallowlyEquals = <T>(item1: T | null | undefined, item2: T | null | undefined) => {
-  const json1 = JSON.stringify(item1);
-  const json2 = JSON.stringify(item2);
-
-  return json1 === json2;
-};

@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { isShallowlyEquals } from '../../utils/utils.ts';
 import { FeedItem } from '../../types/FeedItem.ts';
 
 export type NewsFeedStore = {
@@ -19,10 +18,6 @@ const NewsFeedSlice = createSlice({
   initialState,
   reducers: {
     changeNewsFeed: (state, action: PayloadAction<FeedItem[]>) => {
-      if (isShallowlyEquals(state.newsFeed, action.payload)) {
-        return;
-      }
-
       state.newsFeed = action.payload;
     },
     setError: (state, action: PayloadAction<unknown>) => {
