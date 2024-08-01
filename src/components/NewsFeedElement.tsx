@@ -1,7 +1,7 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { formatDate } from '../utils/formatDate.ts';
 import { FeedItem } from '../types/FeedItem.ts';
-import { StyledLink } from '../styled/StyledLink.ts';
+import { StyledLink } from '../styled/StyledLink.tsx';
 
 type NewsFeedElementProps = {
   feedItem: FeedItem;

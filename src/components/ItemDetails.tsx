@@ -1,6 +1,5 @@
-import { Box, Divider, Stack } from '@mui/material';
+import { Box, Divider, Stack, Typography } from '@mui/material';
 import { formatDate } from '../utils/formatDate.ts';
-import { StyledTitle } from '../styled/StyledHeaders.tsx';
 import { Commentary } from './Commentary.tsx';
 import { useStoresSelector } from '../hooks/useStoreSelector.ts';
 
@@ -14,7 +13,7 @@ export const ItemDetails = () => {
       <>
         <Stack padding={2} gap={1}>
           <Stack gap={1}>
-            <StyledTitle variant="h2">{title}</StyledTitle>
+            <Typography variant="h4">{title}</Typography>
             <span>Date published: {formatDate(time)}</span>
             <span>
               News original:{' '}
@@ -27,7 +26,7 @@ export const ItemDetails = () => {
         </Stack>
         <Stack paddingX={2}>
           <Box display="flex" justifyContent="space-between" alignItems="center">
-            <StyledTitle variant="h4">Comments: {comments_count}</StyledTitle>
+            <Typography variant="h4">Comments: {comments_count}</Typography>
           </Box>
           <Divider />
           {comments.map((comment) => (
