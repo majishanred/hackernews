@@ -7,7 +7,7 @@ export type StoresState = {
   newsFeedStore: NewsFeedStore;
 };
 
-export default configureStore({
+export const newsStore = configureStore({
   reducer: {
     itemStore: newsDetailsReducer,
     newsFeedStore: newsFeedReducer,

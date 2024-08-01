@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import NewsFeedPage from './pages/NewsFeedPage.tsx';
 import ItemPage from './pages/ItemPage.tsx';
 import { Provider } from 'react-redux';
-import newsDetailsStore from './stores/Store.ts';
+import { newsStore } from './stores/Store.ts';
 import { Divider, Stack, Typography } from '@mui/material';
 
 const router = createBrowserRouter([
@@ -24,7 +24,7 @@ function App() {
         <Typography variant="h2">Hacker News</Typography>
       </Stack>
       <Divider />
-      <Provider store={newsDetailsStore}>
+      <Provider store={newsStore}>
         <RouterProvider router={router} />
       </Provider>
     </>
