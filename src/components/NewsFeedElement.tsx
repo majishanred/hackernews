@@ -1,27 +1,26 @@
-import {Box, Stack} from "@mui/material";
-import {Link} from 'react-router-dom'
-import {useSuspenseQuery} from "@tanstack/react-query";
-import {memo} from "react";
+import { Box, Stack, Typography } from '@mui/material';
+import { formatDate } from '../utils/formatDate.ts';
+import { FeedItem } from '../types/FeedItem.ts';
+import { StyledLink } from '../styled/StyledLink.tsx';
 
-type NewsListElementProps = {
-    newsId: number;
+type NewsFeedElementProps = {
+  feedItem: FeedItem;
 };
 
-const NewsFeed = memo(({ newsId }: NewsListElementProps) => {
-    const { data } = useSuspenseQuery({
-        queryKey: ['news', newsId],
-        queryFn: ({ queryKey }) => fetch(`https://hacker-news.firebaseio.com/v0/item/${queryKey[1]}.json?print=pretty`).then(response => response.json())
-    });
-    return (
-        <Stack gap='8px'>
-            <Link to={`/${newsId}`}>{data.title}</Link>
-            <Box display="flex" gap='16px'>
-                <span>By: {data.by}</span>
-                <span>Score: {data.score}</span>
-                <span>Published: {data.time}</span>
-            </Box>
-        </Stack>
-    )
-});
+const NewsFeedElement = ({ feedItem }: NewsFeedElementProps) => {
+  const { id, title, time, points, user } = feedItem;
+  return (
+    <Stack gap={1} paddingX={2}>
+      <StyledLink to={`/${id}`}>
+        <Typography variant="h5">{title}</Typography>
+      </StyledLink>
+      <Box display="flex" gap={2}>
+        <span>By: {user ? user : 'No data'}</span>
+        <span>Score: {points ? points : 'No data'}</span>
+        <span>Published: {formatDate(time)}</span>
+      </Box>
+    </Stack>
+  );
+};
 
-export default NewsFeed;
+export default NewsFeedElement;
