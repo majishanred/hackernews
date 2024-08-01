@@ -1,7 +1,7 @@
 import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import NewsFeedPage from './pages/NewsFeedPage.tsx';
-import NewsPage from './pages/NewsPage.tsx';
+import ItemPage from './pages/ItemPage.tsx';
 import { StyledPageHeader } from './styled/StyledHeaders.tsx';
 import { Provider } from 'react-redux';
 import newsDetailsStore from './stores/Store.ts';
@@ -13,8 +13,8 @@ const router = createBrowserRouter([
     element: <NewsFeedPage />,
   },
   {
-    path: ':id',
-    element: <NewsPage />,
+    path: ':itemId',
+    element: <ItemPage />,
   },
 ]);
 

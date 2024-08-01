@@ -9,6 +9,16 @@ const StyledSpinningLoop = styled(Loop)`
     animation-delay: 0s;
     animation-iteration-count: infinite;
   }
+
+  @keyframes logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(-360deg);
+    }
+  }
 `;
 
 export default StyledSpinningLoop;

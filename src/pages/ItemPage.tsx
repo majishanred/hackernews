@@ -1,24 +1,24 @@
-import { Link } from 'react-router-dom';
-import { News } from '../components/News.tsx';
+import { Link, useParams } from 'react-router-dom';
+import { ItemDetails } from '../components/ItemDetails.tsx';
 import { Box } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import { resetStore, setError, triggerRefetch } from '../stores/slices/NewsDetailsSlice.ts';
+import { useDispatch } from 'react-redux';
+import { setError, triggerRefetch } from '../stores/slices/ItemDetailsSlice.ts';
 import { ArrowBack } from '@mui/icons-material';
 import { StyledFab } from '../styled/StyledFab.tsx';
-import { StoresState } from '../stores/Store.ts';
 import ErrorFallback from '../components/ErrorFallback.tsx';
-import { useEffect } from 'react';
 import StyledSpinningLoop from '../styled/StyledSpinningLoop.tsx';
+import { useStoresSelector } from '../hooks/useStoreSelector.ts';
+import Loader from '../components/Loader.tsx';
+import useFetchItem from '../hooks/useFetchItem.tsx';
 
-const NewsPage = () => {
+const ItemPage = () => {
   const dispatch = useDispatch();
-  const error = useSelector<StoresState>((state) => state.newsStore.error);
+  const error = useStoresSelector((state) => state.itemStore.error);
+  const isLoading = useStoresSelector((state) => state.itemStore.isLoading);
+  const { itemId } = useParams();
+  if (!itemId) throw new Error('NewsId must be provided');
 
-  useEffect(() => {
-    return () => {
-      dispatch(resetStore());
-    };
-  }, []);
+  useFetchItem(itemId, 1000 * 60);
 
   if (error)
     return (
@@ -30,6 +30,8 @@ const NewsPage = () => {
         }
       />
     );
+
+  if (isLoading) return <Loader />;
 
   return (
     <>
@@ -43,9 +45,9 @@ const NewsPage = () => {
           <StyledSpinningLoop />
         </StyledFab>
       </Box>
-      <News />
+      <ItemDetails />
     </>
   );
 };
 
-export default NewsPage;
+export default ItemPage;

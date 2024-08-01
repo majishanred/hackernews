@@ -3,11 +3,11 @@ import { Stack, styled } from '@mui/material';
 const StyledCommentaryBlock = styled(Stack)`
   display: flex;
   flex-direction: column;
-  margin-left: 32px;
+  margin-left: ${({ theme }) => theme.spacing(4)};
 
   width: 100%;
   height: auto;
-  padding: 8px 16px;
+  padding: ${({ theme }) => theme.spacing(1, 2)};
 `;
 
 export default StyledCommentaryBlock;

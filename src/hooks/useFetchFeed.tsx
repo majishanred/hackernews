@@ -1,54 +1,55 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { StoresState } from '../stores/Store.ts';
-import { useEffect } from 'react';
 import axios, { AxiosError, CanceledError } from 'axios';
-import { changeNewsFeed, setError } from '../stores/slices/NewsFeedSlice.ts';
 import { FeedItem } from '../types/FeedItem.ts';
+import { useDispatch } from 'react-redux';
+import { useStoresSelector } from './useStoreSelector.ts';
+import { useEffect } from 'react';
+import { changeNewsFeed, setError, setIsLoading } from '../stores/slices/NewsFeedSlice.ts';
 
-const queryPages = [1, 2, 3, 4];
+const fetchFeed = (signal: AbortSignal) => {
+  return Promise.all(
+    [1, 2, 3, 4].map((page) => axios<FeedItem[]>(`https://api.hnpwa.com/v0/newest/${page}.json`), {
+      signal,
+    }),
+  );
+};
 
-const useFetchFeed = () => {
+const useFetchFeed = (refetchInterval: number) => {
   const dispatch = useDispatch();
-  const refetching = useSelector<StoresState, number>((state) => state.newsFeedStore.refetchTrigger);
+  const refetchIndicator = useStoresSelector((state) => state.newsFeedStore.refetchIndicator);
+  const error = useStoresSelector((state) => state.newsFeedStore.error);
 
   useEffect(() => {
     const controller = new AbortController();
-    const signal = controller.signal;
 
-    const fetchFeed = async () => {
+    const wrapper = async () => {
+      dispatch(setIsLoading(true));
+
       try {
-        const data = await Promise.all(
-          queryPages.map((page) => axios<FeedItem[]>(`https://api.hnpwa.com/v0/newest/${page}.json`), {
-            signal,
-          }),
-        );
-
-        const formatedData = data
+        const rawData = await fetchFeed(controller.signal);
+        const feed = rawData
           .map((element) => element.data)
           .flat()
           .slice(0, 100);
 
-        dispatch(changeNewsFeed(formatedData));
-      } catch (error) {
-        if (error instanceof CanceledError) {
-          return;
-        }
-
-        if (error instanceof AxiosError) {
-          dispatch(setError(error.toJSON()));
+        dispatch(changeNewsFeed(feed));
+      } catch (e: unknown) {
+        if (!(e instanceof CanceledError) && e instanceof AxiosError) {
+          dispatch(setError(true));
         }
       }
+
+      dispatch(setIsLoading(false));
     };
 
-    fetchFeed();
+    wrapper();
 
-    const intervalId = setInterval(fetchFeed, 1000 * 60);
+    const intervalId = setInterval(wrapper, refetchInterval);
 
     return () => {
-      controller.abort();
       clearInterval(intervalId);
+      controller.abort();
     };
-  }, [refetching, dispatch]);
+  }, [refetchIndicator, refetchInterval, dispatch, error]);
 };
 
 export default useFetchFeed;

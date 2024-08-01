@@ -6,13 +6,7 @@ type ErrorFallbackProps = {
 
 const ErrorFallback = ({ resetButton }: ErrorFallbackProps) => {
   return (
-    <Stack
-      sx={{
-        alignItems: 'center',
-        marginTop: '24px',
-        textAlign: 'center',
-      }}
-    >
+    <Stack alignItems="center" marginTop={3} textAlign="center">
       <Typography variant="body1">
         Похоже, произошла какая-то проблема когда мы пытались загрузить данные.
         <br />

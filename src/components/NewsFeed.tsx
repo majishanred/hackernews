@@ -1,21 +1,21 @@
 import { Divider, Stack } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import { StoresState } from '../stores/Store.ts';
-import { NewsDetails } from '../types/NewsDetails.ts';
+import { useDispatch } from 'react-redux';
 import ErrorFallback from './ErrorFallback.tsx';
 import { StyledFab } from '../styled/StyledFab.tsx';
 import { setError, triggerRefetch } from '../stores/slices/NewsFeedSlice.ts';
-import useFetchFeed from '../hooks/useFetchFeed.tsx';
 import NewsFeedElement from './NewsFeedElement.tsx';
 import Loader from './Loader.tsx';
 import StyledSpinningLoop from '../styled/StyledSpinningLoop.tsx';
+import { useStoresSelector } from '../hooks/useStoreSelector.ts';
+import useFetchFeed from '../hooks/useFetchFeed.tsx';
 
 const NewsFeed = () => {
-  const news = useSelector<StoresState, NewsDetails[]>((state) => state.newsFeedStore.newsFeed);
-  const error = useSelector<StoresState, unknown>((state) => state.newsFeedStore.error);
+  const newsFeed = useStoresSelector((state) => state.newsFeedStore.newsFeed);
+  const error = useStoresSelector((state) => state.newsFeedStore.error);
+  const isLoading = useStoresSelector((state) => state.newsFeedStore.isLoading);
   const dispatch = useDispatch();
 
-  useFetchFeed();
+  useFetchFeed(60 * 1000);
 
   if (error) {
     return (
@@ -29,16 +29,16 @@ const NewsFeed = () => {
     );
   }
 
-  if (!news.length) return <Loader />;
+  if (isLoading) return <Loader />;
 
   return (
-    <Stack gap="18px">
+    <Stack gap={2}>
       <StyledFab onClick={() => dispatch(triggerRefetch())} sx={{ marginTop: '4px', marginLeft: 'auto' }}>
         <StyledSpinningLoop />
       </StyledFab>
-      <Stack paddingX="4px" gap="16px">
-        {news.map((feedItem) => (
-          <Stack key={feedItem.id} gap="16px">
+      <Stack paddingX={1} gap={2}>
+        {newsFeed.map((feedItem) => (
+          <Stack key={feedItem.id} gap={2}>
             <NewsFeedElement feedItem={feedItem} />
             <Divider />
           </Stack>

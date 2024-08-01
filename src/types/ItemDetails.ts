@@ -1,6 +1,6 @@
 import { Commentary } from './Commentary.ts';
 
-export type NewsDetails = {
+export type ItemDetails = {
   id: number;
   title: string;
   points: number | null;

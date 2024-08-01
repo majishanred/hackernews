@@ -4,13 +4,15 @@ import { FeedItem } from '../../types/FeedItem.ts';
 export type NewsFeedStore = {
   newsFeed: FeedItem[];
   error: unknown;
-  refetchTrigger: number;
+  refetchIndicator: number;
+  isLoading: boolean;
 };
 
 const initialState: NewsFeedStore = {
   newsFeed: [],
   error: null,
-  refetchTrigger: Date.now(),
+  refetchIndicator: Date.now(),
+  isLoading: false,
 };
 
 const NewsFeedSlice = createSlice({
@@ -25,11 +27,14 @@ const NewsFeedSlice = createSlice({
       state.newsFeed = [];
     },
     triggerRefetch: (state) => {
-      state.refetchTrigger = Date.now();
+      state.refetchIndicator = Date.now();
+    },
+    setIsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
     },
   },
 });
 
-export const { changeNewsFeed, setError, triggerRefetch } = NewsFeedSlice.actions;
+export const { setIsLoading, changeNewsFeed, setError, triggerRefetch } = NewsFeedSlice.actions;
 
 export default NewsFeedSlice.reducer;

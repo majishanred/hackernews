@@ -1,15 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
-import newsDetailsReducer, { NewsStore } from './slices/NewsDetailsSlice.ts';
+import newsDetailsReducer, { ItemStore } from './slices/ItemDetailsSlice.ts';
 import newsFeedReducer, { NewsFeedStore } from './slices/NewsFeedSlice.ts';
 
 export type StoresState = {
-  newsStore: NewsStore;
+  itemStore: ItemStore;
   newsFeedStore: NewsFeedStore;
 };
 
 export default configureStore({
   reducer: {
-    newsStore: newsDetailsReducer,
+    itemStore: newsDetailsReducer,
     newsFeedStore: newsFeedReducer,
   },
 });
