@@ -4,7 +4,8 @@ import NewsFeedPage from './pages/NewsFeedPage.tsx';
 import ItemPage from './pages/ItemPage.tsx';
 import { Provider } from 'react-redux';
 import { newsStore } from './stores/Store.ts';
-import { Divider, Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
+import Header from './components/Header.tsx';
 
 const router = createBrowserRouter([
   {
@@ -19,15 +20,12 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <>
-      <Stack alignItems="center">
-        <Typography variant="h2">Hacker News</Typography>
-      </Stack>
-      <Divider />
+    <Stack>
+      <Header />
       <Provider store={newsStore}>
         <RouterProvider router={router} />
       </Provider>
-    </>
+    </Stack>
   );
 }
 
