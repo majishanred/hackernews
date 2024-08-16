@@ -10,7 +10,6 @@ export type NewsFeedStore = {
 
 const initialState: NewsFeedStore = {
   newsFeed: [],
-  error: null,
   refetchIndicator: Date.now(),
   isLoading: false,
 };
@@ -22,10 +21,6 @@ const NewsFeedSlice = createSlice({
     changeNewsFeed: (state, action: PayloadAction<FeedItem[]>) => {
       state.newsFeed = action.payload;
     },
-    setError: (state, action: PayloadAction<unknown>) => {
-      state.error = action.payload;
-      state.newsFeed = [];
-    },
     triggerRefetch: (state) => {
       state.refetchIndicator = Date.now();
     },
@@ -35,6 +30,6 @@ const NewsFeedSlice = createSlice({
   },
 });
 
-export const { setIsLoading, changeNewsFeed, setError, triggerRefetch } = NewsFeedSlice.actions;
+export const { setIsLoading, changeNewsFeed, triggerRefetch } = NewsFeedSlice.actions;
 
 export default NewsFeedSlice.reducer;

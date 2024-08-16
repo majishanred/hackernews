@@ -5,7 +5,6 @@ import { Commentary } from '../../types/Commentary.ts';
 export type ItemStore = {
   itemDetails: ItemDetails | null;
   expandedComments: number[];
-  error: unknown;
   refetchIndicator: number;
   isLoading: boolean;
 };
@@ -14,7 +13,6 @@ const initialState: ItemStore = {
   itemDetails: null,
   expandedComments: [],
   refetchIndicator: Date.now(),
-  error: null,
   isLoading: false,
 };
 
@@ -24,9 +22,6 @@ const ItemSlice = createSlice({
   reducers: {
     changeItem: (state, action: PayloadAction<ItemDetails>) => {
       state.itemDetails = action.payload;
-    },
-    setError: (state, action: PayloadAction<unknown>) => {
-      state.error = action.payload;
     },
     triggerRefetch: (state) => {
       state.refetchIndicator = Date.now();
@@ -42,6 +37,6 @@ const ItemSlice = createSlice({
   },
 });
 
-export const { changeItem, setError, triggerRefetch, setIsLoading, expandComment } = ItemSlice.actions;
+export const { changeItem, triggerRefetch, setIsLoading, expandComment } = ItemSlice.actions;
 
 export default ItemSlice.reducer;
