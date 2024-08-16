@@ -3,17 +3,27 @@ import { ItemDetails } from '../../types/ItemDetails.ts';
 import { Commentary } from '../../types/Commentary.ts';
 
 export type ItemStore = {
-  itemDetails: ItemDetails | null;
+  itemDetails: ItemDetails;
   expandedComments: number[];
   refetchIndicator: number;
   isLoading: boolean;
 };
 
+const itemDetailsPlaceholder: ItemDetails = {
+  id: 0,
+  title: '',
+  points: null,
+  user: '',
+  time: 0,
+  comments_count: 0,
+  comments: [],
+};
+
 const initialState: ItemStore = {
-  itemDetails: null,
+  itemDetails: itemDetailsPlaceholder,
   expandedComments: [],
   refetchIndicator: Date.now(),
-  isLoading: false,
+  isLoading: true,
 };
 
 const ItemSlice = createSlice({

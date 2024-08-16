@@ -3,7 +3,6 @@ import { FeedItem } from '../../types/FeedItem.ts';
 
 export type NewsFeedStore = {
   newsFeed: FeedItem[];
-  error: unknown;
   refetchIndicator: number;
   isLoading: boolean;
 };
@@ -11,7 +10,7 @@ export type NewsFeedStore = {
 const initialState: NewsFeedStore = {
   newsFeed: [],
   refetchIndicator: Date.now(),
-  isLoading: false,
+  isLoading: true,
 };
 
 const NewsFeedSlice = createSlice({
