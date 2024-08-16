@@ -22,6 +22,10 @@ export const Commentary = ({ comment }: CommentaryProps) => {
 
   const dispatch = useDispatch();
 
+  const expandeComment = useCallback(() => {
+    dispatch(expandComment(comment));
+  }, []);
+
   if (comment.deleted || comment.dead)
     return (
       <Stack padding={1}>
@@ -31,7 +35,7 @@ export const Commentary = ({ comment }: CommentaryProps) => {
     );
 
   return (
-    <Stack onClick={() => dispatch(expandComment(comment))} padding={1}>
+    <Stack onClick={expandeComment} padding={1}>
       <Stack gap={2}>
         <span>By: {comment.user}</span>
         <div ref={commentContentRef}></div>
