@@ -1,4 +1,4 @@
-import { Box, Divider, Stack, Typography } from '@mui/material';
+import { Box, Divider, Stack, styled, Typography } from '@mui/material';
 import { formatDate } from '../utils/formatDate.ts';
 import { Commentary } from './Commentary.tsx';
 import { useStoresSelector } from '../hooks/useStoreSelector.ts';
@@ -47,7 +47,7 @@ export const ItemDetails = () => {
   return (
     <Stack>
       {isLoading && <Loader />}
-      <Box marginTop="4px" paddingX="4px" display="flex" alignItems="space-between">
+      <StyledContainer>
         <Link to="/">
           <StyledFab>
             <ArrowBack />
@@ -56,7 +56,7 @@ export const ItemDetails = () => {
         <StyledFab onClick={onRefetchClick} sx={{ marginLeft: 'auto' }} disabled={isLoading}>
           <StyledSpinningLoop />
         </StyledFab>
-      </Box>
+      </StyledContainer>
       <Stack padding={2} gap={1}>
         <Stack gap={1}>
           <Typography variant="h4">{title}</Typography>
@@ -82,3 +82,10 @@ export const ItemDetails = () => {
     </Stack>
   );
 };
+
+const StyledContainer = styled(Box)`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  padding: 0 4px;
+`;
